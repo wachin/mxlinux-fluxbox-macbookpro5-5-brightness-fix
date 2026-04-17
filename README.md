@@ -574,3 +574,154 @@ XF86LaunchA  :ExecCommand lxqt-config-monitor
 ## Para otro WM donde no funcionen estas techas
 
 Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funciona esta tecla, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadela, añadiendo el atajo de teclado, el nombre, y el comando, para que se pueda habilitar
+
+---
+
+# 💿 Solución: botón de expulsión (Eject) no funciona en Linux
+
+En el **MacBook Pro 5,5**, el botón de expulsión de CD/DVD (ubicado en la esquina superior derecha del teclado) **puede no funcionar en Linux por defecto**.
+
+Esto ocurre porque **no es una tecla de teclado normal**, sino un **evento de hardware (ACPI)**.
+
+---
+
+### ¿Por qué no funciona como otras teclas?
+
+A diferencia de:
+
+* F1 / F2 (brillo pantalla)
+* F5 / F6 (brillo teclado)
+* F7 / F8 / F9 (multimedia)
+
+👉 El botón de eject:
+
+* ❌ No pasa por el sistema de teclado (X11)
+* ❌ No aparece en `xev`
+* ❌ No puede configurarse en `~/.fluxbox/keys`
+* ✅ Funciona mediante **ACPI (Advanced Configuration and Power Interface)**
+
+Por eso, **no se puede tratar como un atajo de teclado común**.
+
+---
+
+## ✅ 1. Verificar que el lector funciona
+
+```bash
+eject
+```
+
+Si la unidad se abre, todo está correcto.
+
+---
+
+## ✅ 2. Detectar el evento del botón
+
+Ejecutar:
+
+```bash
+acpi_listen
+```
+
+Luego presionar el botón de eject.
+
+Ejemplo real en este equipo:
+
+```
+cd/eject CDEJECT 00000080 00000000
+```
+
+---
+
+## ⚠️ IMPORTANTE
+
+👉 **El texto que aparece en `acpi_listen` es clave**
+👉 Debe usarse en la configuración
+
+Por ejemplo:
+
+* Si aparece:
+  `cd/eject ...` → usar `event=cd/eject.*`
+* Si aparece:
+  `button/eject ...` → usar `event=button/eject.*`
+
+Cada equipo puede ser diferente.
+
+---
+
+## ✅ 3. Instalar herramientas necesarias
+
+```bash
+sudo apt install acpid eject
+```
+
+---
+
+## ✅ 4. Crear regla ACPI
+
+```bash
+sudo nano /etc/acpi/events/eject
+```
+
+Contenido (según el ejemplo detectado):
+
+```
+event=cd/eject.*
+action=/usr/bin/eject
+```
+
+---
+
+## ✅ 5. Reiniciar servicio
+
+```bash
+sudo systemctl restart acpid
+```
+
+---
+
+## ✅ 6. Probar
+
+Presionar el botón:
+
+👉 La unidad debe abrirse automáticamente.
+
+---
+
+## Opciones adicionales
+
+Abrir/cerrar (modo toggle):
+
+```
+action=/usr/bin/eject -T
+```
+
+Forzar expulsión:
+
+```
+action=/usr/bin/eject -f
+```
+
+---
+
+## Resultado final
+
+* El botón físico funciona correctamente ✔
+* No depende del entorno gráfico ✔
+* Funciona incluso fuera de Fluxbox ✔
+* Configuración persistente ✔
+
+---
+
+## Nota técnica (importante)
+
+Este tipo de botones:
+
+* No son teclas estándar
+* No pueden capturarse con `xev`
+* No funcionan en gestores de ventanas como Fluxbox
+
+👉 Por eso, la solución correcta es usar **ACPI (`acpid`)**, no atajos de teclado.
+
+---
+
+Dios les bendiga
