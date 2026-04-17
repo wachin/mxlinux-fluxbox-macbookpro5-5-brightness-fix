@@ -116,7 +116,7 @@ brightnessctl set 10%+
 
 ### Para otro WM donde no funcionen estas techas
 
-Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar el brillo del monitor
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que se pueda habilitar el brillo del monitor
 
 
 ---
@@ -404,7 +404,7 @@ Si esto funciona → ya solo falta mapear teclas
 
 ### Para otro WM donde no funcionen estas techas
 
-Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar el brillo del monitor
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que se pueda habilitar el brillo del monitor
 
 ---
 
@@ -545,7 +545,32 @@ XF86Eject  :ExecCommand eject
 
 ## Para otro WM donde no funcionen estas techas
 
-Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funciona esta tecla, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadela, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funciona esta tecla, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadela, añadiendo el atajo de teclado, el nombre, y el comando, para que se pueda habilitar
 
 ---
 
+# Para lanzar el configurador del Monitor
+
+He puesto en la terminal
+
+```bash
+lxqt-config-monitor
+```
+
+y se lanza el programa que configura el monitor, entonces:
+Editar:
+
+```bash
+nano ~/.fluxbox/keys
+```
+
+Agregar:
+
+```bash
+# lanzar LXQT Config Monitor
+XF86LaunchA  :ExecCommand lxqt-config-monitor
+```
+
+## Para otro WM donde no funcionen estas techas
+
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funciona esta tecla, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadela, añadiendo el atajo de teclado, el nombre, y el comando, para que se pueda habilitar
