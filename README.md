@@ -163,6 +163,21 @@ Esto mostrará una notificación visual cada vez que se cambie el brillo.
 
 ---
 
+### ⚠️ Nota importante
+
+En algunos sistemas, las teclas **F5/F6 no envían la señal correcta**.
+
+Para comprobarlo:
+
+```bash
+xev
+```
+
+Presionar F5 y F6 y verificar qué evento generan.
+Si no funcionan, se pueden reasignar usando el nombre correcto que muestre `xev`.
+
+---
+
 ## Resultado final
 
 * El brillo se puede ajustar con F1/F2 sin usar `sudo`.
@@ -231,26 +246,23 @@ sudo udevadm control --reload
 sudo udevadm trigger
 ```
 
-Asegurarse de pertenecer al grupo `video`:
+**Nota:** Pero si deseas cierra sesión y vuelve a entrar porque ejemplo si tenías hecha alguna configuración con por ejemplo el touchpad, se borrará hasta que reinicies.
 
-```bash
-groups $USER
-```
-
-Si no aparece, añadirlo:
-
-```bash
-sudo usermod -aG video $USER
-```
-
-Cerrar sesión o reiniciar.
+Asegurarse de pertenecer al grupo `video`, bueno eso ya está en el paso anterior.
 
 ---
 
 ### 4. Probar el control del teclado
 
+Para subir el brillo del teclado:
+
 ```bash
 brightnessctl -d smc::kbd_backlight set 10%+
+```
+
+Para bajar el brillo del teclado:
+
+```bash
 brightnessctl -d smc::kbd_backlight set 10%-
 ```
 
