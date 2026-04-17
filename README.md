@@ -5,7 +5,7 @@ Los pasos fueron probados y verificados en un sistema funcional.
 
 ---
 
-## 🧭 1. Verificar el dispositivo de brillo
+## 1. Verificar el dispositivo de brillo
 
 Abrir una terminal y ejecutar:
 
@@ -29,7 +29,7 @@ Si el brillo cambia, el dispositivo está funcionando correctamente.
 
 ---
 
-## ⚙️ 2. Instalar herramienta de control de brillo
+## 2. Instalar herramienta de control de brillo
 
 ```bash
 sudo apt install brightnessctl
@@ -51,7 +51,7 @@ Device 'nv_backlight' of class 'backlight':
 
 ---
 
-## 🔒 3. Permitir que el usuario cambie el brillo sin usar `sudo`
+## 3. Permitir que el usuario cambie el brillo sin usar `sudo`
 
 Por defecto, solo *root* puede escribir en el archivo `/sys/class/backlight/nv_backlight/brightness`.
 Para permitir que el usuario lo modifique, crear una regla de **udev**:
@@ -75,6 +75,13 @@ Asegurarse de que el usuario pertenece al grupo `video`:
 groups $USER
 ```
 
+ejemplo de cómo debe aparecer:
+
+```bash
+$ groups $USER
+wachin : wachin lp dialout cdrom floppy sudo audio dip video plugdev users netdev lpadmin scanner sambashare
+```
+
 Si no aparece `video`, agregarlo:
 
 ```bash
@@ -95,9 +102,21 @@ Debe mostrar algo como:
 -rw-rw-r-- 1 root video ... /sys/class/backlight/nv_backlight/brightness
 ```
 
+si desea probar como funciona ponga en la terminal para bajar el brillo:
+
+```bash
+brightnessctl set 10%-
+```
+
+y para subirlo:
+
+```bash
+brightnessctl set 10%+
+```
+
 ---
 
-## 🎹 4. Configurar teclas F1 y F2 en Fluxbox
+## 4. Configurar teclas F1 y F2 en Fluxbox
 
 Editar el archivo de teclas:
 
@@ -110,7 +129,7 @@ Agregar al final:
 ```bash
 # Control de brillo con F1 y F2
 XF86MonBrightnessDown :ExecCommand brightnessctl set 10%-
-XF86MonBrightnessUp   :ExecCommand brightnessctl set +10%
+XF86MonBrightnessUp   :ExecCommand brightnessctl set 10%+
 ```
 
 Guardar (**Ctrl+O**, **Enter**, **Ctrl+X**) y aplicar los cambios:
@@ -123,7 +142,7 @@ Ahora las teclas **F1/F2** ajustan el brillo correctamente sin requerir `sudo`.
 
 ---
 
-## 💡 (Opcional) Mostrar notificación del brillo
+## (Opcional) Mostrar notificación del brillo
 
 Instalar el paquete de notificaciones:
 
@@ -135,14 +154,14 @@ Y usar estas líneas en lugar de las anteriores:
 
 ```bash
 XF86MonBrightnessDown :ExecCommand bash -c 'brightnessctl set 10%- && notify-send "🔅 Brillo: $(brightnessctl g)"'
-XF86MonBrightnessUp   :ExecCommand bash -c 'brightnessctl set +10% && notify-send "🔆 Brillo: $(brightnessctl g)"'
+XF86MonBrightnessUp   :ExecCommand bash -c 'brightnessctl set 10%+ && notify-send "🔆 Brillo: $(brightnessctl g)"'
 ```
 
 Esto mostrará una notificación visual cada vez que se cambie el brillo.
 
 ---
 
-## ✅ Resultado final
+## Resultado final
 
 * El brillo se puede ajustar con F1/F2 sin usar `sudo`.
 * Los permisos se aplican automáticamente al iniciar el sistema.
