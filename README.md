@@ -114,6 +114,8 @@ y para subirlo:
 brightnessctl set 10%+
 ```
 
+**Nota:** Estos comandos también se pueden añadir en algún otro Linux en las opciones de atajos de teclado, para hacer funcionar esas teclas.
+
 ---
 
 ## 4. Configurar teclas F1 y F2 en Fluxbox
