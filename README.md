@@ -172,3 +172,135 @@ Esto mostrará una notificación visual cada vez que se cambie el brillo.
 
 ---
 
+## 💡 Control del brillo del teclado (F5 / F6) en MacBook Pro 5,5
+
+Además del brillo de pantalla (F1/F2), el **MacBook Pro 5,5** cuenta con **retroiluminación de teclado**, controlada por las teclas **F5 y F6**.
+
+En Linux, este control **no usa `/sys/class/backlight`**, sino el subsistema de LEDs.
+
+---
+
+### 1. Verificar el dispositivo del teclado
+
+Abrir una terminal y ejecutar:
+
+```bash
+ls /sys/class/leds/
+```
+
+Debe aparecer:
+
+```
+smc::kbd_backlight
+```
+
+Si aparece, el sistema reconoce correctamente el teclado retroiluminado.
+
+---
+
+### 2. Probar el control manual
+
+```bash
+brightnessctl -d smc::kbd_backlight set 50%
+```
+
+Si aparece el error de permisos:
+
+```
+Permission denied
+```
+
+es normal, se soluciona en el siguiente paso.
+
+---
+
+### 3. Permitir control sin `sudo`
+
+Crear una regla de **udev**:
+
+```bash
+sudo tee /etc/udev/rules.d/91-kbd-backlight.rules > /dev/null <<'EOF'
+ACTION=="add", SUBSYSTEM=="leds", KERNEL=="smc::kbd_backlight", RUN+="/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="/bin/chmod g+w /sys/class/leds/%k/brightness"
+EOF
+```
+
+Recargar reglas:
+
+```bash
+sudo udevadm control --reload
+sudo udevadm trigger
+```
+
+Asegurarse de pertenecer al grupo `video`:
+
+```bash
+groups $USER
+```
+
+Si no aparece, añadirlo:
+
+```bash
+sudo usermod -aG video $USER
+```
+
+Cerrar sesión o reiniciar.
+
+---
+
+### 4. Probar el control del teclado
+
+```bash
+brightnessctl -d smc::kbd_backlight set 10%+
+brightnessctl -d smc::kbd_backlight set 10%-
+```
+
+---
+
+### 5. Configurar teclas F5 y F6 en Fluxbox
+
+Editar:
+
+```bash
+nano ~/.fluxbox/keys
+```
+
+Agregar:
+
+```bash
+# Brillo teclado MacBook
+F5 :ExecCommand brightnessctl -d smc::kbd_backlight set 10%-
+F6 :ExecCommand brightnessctl -d smc::kbd_backlight set 10%+
+```
+
+Aplicar cambios:
+
+```bash
+fluxbox-remote reconfigure
+```
+
+---
+
+### ⚠️ Nota importante
+
+En algunos sistemas, las teclas **F5/F6 no envían la señal correcta**.
+
+Para comprobarlo:
+
+```bash
+xev
+```
+
+Presionar F5 y F6 y verificar qué evento generan.
+Si no funcionan, se pueden reasignar usando el nombre correcto que muestre `xev`.
+
+---
+
+### ✅ Resultado final
+
+* El teclado se ilumina correctamente.
+* Control total sin usar `sudo`.
+* Integración con teclas F5 y F6.
+* Configuración persistente y limpia.
+
+---
+
