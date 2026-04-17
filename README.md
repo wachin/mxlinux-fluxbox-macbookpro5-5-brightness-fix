@@ -114,7 +114,10 @@ y para subirlo:
 brightnessctl set 10%+
 ```
 
-**Nota:** Estos dos comandos se pueden añadir ejemplo en la configuración de los atajos de teclado de LXQT por si alguien usa ese Gestor de Ventanas, para que pueda habilitar el brillo del monitor. Esto además de en algún otro Gestor de ventanas.
+### Para otro WM donde no funcionen estas techas
+
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar el brillo del monitor
+
 
 ---
 
@@ -187,7 +190,7 @@ Si no funcionan, se pueden reasignar usando el nombre correcto que muestre `xev`
 
 ---
 
-## 💡 Control del brillo del teclado (F5 / F6) en MacBook Pro 5,5
+# 💡 Control del brillo del teclado (F5 / F6) en MacBook Pro 5,5
 
 Además del brillo de pantalla (F1/F2), el **MacBook Pro 5,5** cuenta con **retroiluminación de teclado**, controlada por las teclas **F5 y F6**.
 
@@ -195,7 +198,7 @@ En Linux, este control **no usa `/sys/class/backlight`**, sino el subsistema de 
 
 ---
 
-### 1. Verificar el dispositivo del teclado
+## 1. Verificar el dispositivo del teclado
 
 Abrir una terminal y ejecutar:
 
@@ -213,7 +216,7 @@ Si aparece, el sistema reconoce correctamente el teclado retroiluminado.
 
 ---
 
-### 2. Probar el control manual
+## 2. Probar el control manual
 
 ```bash
 brightnessctl -d smc::kbd_backlight set 50%
@@ -229,7 +232,7 @@ es normal, se soluciona en el siguiente paso.
 
 ---
 
-### 3. Permitir control sin `sudo`
+## 3. Permitir control sin `sudo`
 
 Crear una regla de **udev**:
 
@@ -252,7 +255,7 @@ Asegurarse de pertenecer al grupo `video`, bueno eso ya está en el paso anterio
 
 ---
 
-### 4. Probar el control del teclado
+## 4. Probar el control del teclado
 
 Para subir el brillo del teclado:
 
@@ -266,7 +269,9 @@ Para bajar el brillo del teclado:
 brightnessctl -d smc::kbd_backlight set 10%-
 ```
 
-**Nota:** Estos dos comandos se pueden añadir ejemplo en la configuración de los atajos de teclado de LXQT por si alguien usa ese Gestor de Ventanas, para que pueda habilitar el brillo de estas teclas. Esto además de en algún otro Gestor de ventanas.
+### Para otro WM donde no funcionen estas techas
+
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar el brillo del teclado
 
 ---
 
@@ -318,3 +323,196 @@ Si no funcionan, se pueden reasignar usando el nombre correcto que muestre `xev`
 
 ---
 
+# Control multimedia (F7, F8, F9) en Linux
+
+Para configurar las teclas:
+
+* **F7 → anterior (⏮)**
+* **F8 → play/pausa (⏯)**
+* **F9 → siguiente (⏭)**
+
+En Linux funcionan mediante eventos **XF86Audio**.
+
+---
+
+## ✅ 1. Verificar si las teclas son detectadas (Opcional)
+
+Este paso lo puedes omitir, usalo en caso de que no funcionen las teclas
+
+Ejecuta:
+
+```bash
+xev
+```
+
+Presiona F7, F8 y F9.
+
+Deberías ver algo como:
+
+```text
+XF86AudioPrev
+XF86AudioPlay
+XF86AudioNext
+```
+
+Si ves eso → perfecto ✔
+Si NO → luego hay que solucionarlo
+
+---
+
+## ✅ 2. Instalar herramienta para controlar multimedia
+
+Instala:
+
+```bash
+sudo apt install playerctl
+```
+
+👉 `playerctl` funciona con la mayoría de reproductores:
+
+* VLC
+* Firefox / YouTube
+* MPV
+* Spotify
+
+---
+
+## ✅ 3. Probar comandos manuales
+
+Abre por ejemplo VLC y carga varios archivos de audio, y en la termina:
+
+Para **pausar o reproducir** un archivo de audio:
+
+```bash
+playerctl play-pause
+```
+
+Para reproducir el **siguiente** archivo:
+
+```bash
+playerctl next
+```
+
+Para reproducir el archivo **anterior**:
+
+```bash
+playerctl previous
+```
+
+Si esto funciona → ya solo falta mapear teclas
+
+**Nota:** Para otros Gestores de ventana como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando
+
+---
+
+## ✅ 4. Configurar en Fluxbox
+
+Editar:
+
+```bash
+nano ~/.fluxbox/keys
+```
+
+Agregar:
+
+```bash
+# Control multimedia
+XF86AudioPlay  :ExecCommand playerctl play-pause
+XF86AudioNext  :ExecCommand playerctl next
+XF86AudioPrev  :ExecCommand playerctl previous
+```
+
+Aplicar:
+
+```bash
+fluxbox-remote reconfigure
+```
+
+---
+
+## ⚠️ Si F7, F8, F9 NO funcionan
+
+Muy común en Mac + Linux.
+
+### 🔍 Paso 1: ver qué envían realmente
+
+Con `xev`, puede salir algo como:
+
+```text
+F7
+F8
+F9
+```
+
+o cosas raras tipo:
+
+```text
+XF86Launch1
+```
+
+---
+
+## 🔧 Solución alternativa
+
+Si salen como teclas normales:
+
+```bash
+F7 :ExecCommand playerctl previous
+F8 :ExecCommand playerctl play-pause
+F9 :ExecCommand playerctl next
+```
+
+---
+
+## 🔧 Solución avanzada (cuando no detecta nada)
+
+Instala:
+
+```bash
+sudo apt install acpid
+```
+
+Y revisa eventos:
+
+```bash
+acpi_listen
+```
+
+Presiona las teclas y mira qué aparece.
+
+Luego se pueden mapear manualmente.
+
+---
+
+## 🎯 Resultado final
+
+* Controlas música desde el teclado ✔
+* Funciona con navegador (YouTube) ✔
+* Funciona con VLC, MPV, etc ✔
+* Integrado con Fluxbox ✔
+
+---
+
+## 🚀 BONUS (muy recomendable)
+
+Puedes mostrar notificación:
+
+```bash
+XF86AudioPlay :ExecCommand playerctl play-pause && notify-send "⏯ Play/Pausa"
+```
+
+---
+
+## 🧠 Nota importante
+
+Esto funciona gracias a **MPRIS (Media Player Remote Interface Specification)**, que es el sistema estándar en Linux para controlar reproductores.
+
+---
+
+Si quieres, en el siguiente paso te puedo dejar:
+
+✔ Volumen en F10/F11/F12
+✔ OSD tipo barra (como Windows/macOS)
+✔ Integración con PipeWire o PulseAudio
+
+Solo dime 👍
