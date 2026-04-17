@@ -114,7 +114,7 @@ y para subirlo:
 brightnessctl set 10%+
 ```
 
-**Nota:** Estos comandos también se pueden añadir en algún otro Linux en las opciones de atajos de teclado, para hacer funcionar esas teclas.
+**Nota:** Estos dos comandos se pueden añadir ejemplo en la configuración de los atajos de teclado de LXQT por si alguien usa ese Gestor de Ventanas, para que pueda habilitar el brillo del monitor. Esto además de en algún otro Gestor de ventanas.
 
 ---
 
@@ -265,6 +265,8 @@ Para bajar el brillo del teclado:
 ```bash
 brightnessctl -d smc::kbd_backlight set 10%-
 ```
+
+**Nota:** Estos dos comandos se pueden añadir ejemplo en la configuración de los atajos de teclado de LXQT por si alguien usa ese Gestor de Ventanas, para que pueda habilitar el brillo de estas teclas. Esto además de en algún otro Gestor de ventanas.
 
 ---
 
