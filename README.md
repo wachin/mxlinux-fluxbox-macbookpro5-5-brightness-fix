@@ -520,3 +520,32 @@ XF86AudioPrev  :ExecCommand playerctl previous && notify-send "⏮️ Anterior"
 Esto funciona gracias a **MPRIS (Media Player Remote Interface Specification)**, que es el sistema estándar en Linux para controlar reproductores.
 
 ---
+
+# Para eyectar el Disco CD o DVD del lector
+
+He puesto en la terminal
+
+```bash
+eject
+```
+
+y el disco es ejectado, entonces:
+Editar:
+
+```bash
+nano ~/.fluxbox/keys
+```
+
+Agregar:
+
+```bash
+# Eyectar lector de discos
+XF86Eject  :ExecCommand eject
+```
+
+## Para otro WM donde no funcionen estas techas
+
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funciona esta tecla, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadela, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar
+
+---
+
