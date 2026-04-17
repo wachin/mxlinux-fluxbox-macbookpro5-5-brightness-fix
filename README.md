@@ -1,11 +1,11 @@
-# Control de brillo funcional en MacBook Pro 5,5 con MX Linux 23 Fluxbox
+# Habilitar teclas de control de brillo monitor y teclado, Multimedia, en MacBook Pro 5,5 con MX Linux 23 Fluxbox
 
-Este documento explica cómo habilitar el control de brillo de la pantalla (teclas **F1/F2**) en **MX Linux 23 Fluxbox (64-bit)** instalado en un **MacBook Pro 5,5 (2009)** con GPU Nvidia 9400M.  
+Este documento explica cómo habilitar el control de brillo de la pantalla (teclas **F1/F2**), el brillo de las teclas, las teclas multimedias, en **MX Linux 23 Fluxbox (64-bit)** instalado en un **MacBook Pro 5,5 (2009)** con GPU Nvidia 9400M.  
 Los pasos fueron probados y verificados en un sistema funcional.
 
 ---
 
-## 1. Verificar el dispositivo de brillo
+## 1. Verificar el dispositivo de brillo del monitor
 
 Abrir una terminal y ejecutar:
 
@@ -401,7 +401,10 @@ playerctl previous
 
 Si esto funciona → ya solo falta mapear teclas
 
-**Nota:** Para otros Gestores de ventana como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando
+
+### Para otro WM donde no funcionen estas techas
+
+Para otros Gestores de ventana (Window Manager "WM") como LXQT etc, si estas usandolo y no funcionan estas teclas, si tiene una opción donde añadir editar atajos de teclado con interfaz gráfica (o sea no en texto plano), añadelas una por una, añadiendo el atajo de teclado, el nombre, y el comando, para que pueda habilitar el brillo del monitor
 
 ---
 
@@ -452,7 +455,7 @@ XF86Launch1
 
 ---
 
-## 🔧 Solución alternativa
+## Solución alternativa
 
 Si salen como teclas normales:
 
@@ -464,7 +467,7 @@ F9 :ExecCommand playerctl next
 
 ---
 
-## 🔧 Solución avanzada (cuando no detecta nada)
+## Solución avanzada (cuando no detecta nada)
 
 Instala:
 
@@ -484,7 +487,7 @@ Luego se pueden mapear manualmente.
 
 ---
 
-## 🎯 Resultado final
+## Resultado final
 
 * Controlas música desde el teclado ✔
 * Funciona con navegador (YouTube) ✔
@@ -493,7 +496,7 @@ Luego se pueden mapear manualmente.
 
 ---
 
-## 🚀 BONUS (muy recomendable)
+## BONUS (muy recomendable)
 
 Puedes mostrar notificación:
 
@@ -501,18 +504,19 @@ Puedes mostrar notificación:
 XF86AudioPlay :ExecCommand playerctl play-pause && notify-send "⏯ Play/Pausa"
 ```
 
+lo cual habría que poner así:
+
+```
+XF86AudioPlay  :ExecCommand playerctl play-pause && notify-send "⏯ Play/Pausa"
+XF86AudioNext  :ExecCommand playerctl next && notify-send "⏭️ Siguiente"
+XF86AudioPrev  :ExecCommand playerctl previous && notify-send "⏮️ Anterior"
+```
+
+
 ---
 
-## 🧠 Nota importante
+## Nota importante
 
 Esto funciona gracias a **MPRIS (Media Player Remote Interface Specification)**, que es el sistema estándar en Linux para controlar reproductores.
 
 ---
-
-Si quieres, en el siguiente paso te puedo dejar:
-
-✔ Volumen en F10/F11/F12
-✔ OSD tipo barra (como Windows/macOS)
-✔ Integración con PipeWire o PulseAudio
-
-Solo dime 👍
